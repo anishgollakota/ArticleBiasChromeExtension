@@ -8,6 +8,7 @@
       "js": ["page.js"]
     }
   ],
+  "permissions": [ "tabs" ],
   "browser_action": {
     "default_title": "Time to current page",
     "default_icon": "clock.png",

@@ -1,14 +1,50 @@
-// Copyright (c) 2013 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
 
-chrome.runtime.onConnect.addListener(function(port) {
-  port.onMessage.addListener(function(msg) {
-    port.postMessage({counter: msg.counter+1});
-  });
+
+//check if article
+var curr_webpage = window.location.href
+
+//send request to api to get article content
+var api_key = "db0e7e9f0f30420fa4473eed886e32d3";
+var scrapinghub_endpoint = "https://autoextract.scrapinghub.com/v1/extract";
+
+fetch("https://www.vox.com/2020/9/18/20917757/justice-ginsburg-ruth-bader-ginsburg-dies", {
+  method: "GET",
+  mode: 'no-cors'
+}).then(function(response){
+  console.log("Vox: " + response);
 });
 
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    sendResponse({counter: request.counter+1});
+
+let h = new Headers();
+  h.set('Content-Type', 'application/json');
+  h.set('Authorization', 'Basic ' + btoa(api_key) + ':');
+
+  console.log('Basic ' + btoa(api_key + ':'))
+  
+  fetch(scrapinghub_endpoint, {
+    method: 'POST',
+    headers: h,
+    body: 
+      [
+        {
+          "url": curr_webpage,
+          "pageType": "article"
+        }
+      ]
+  }).then(function(response){
+    console.log(response);
+  }).catch((err)=>{
+    console.log("error: " + err);
   });
+
+// //send article body to ML backend
+
+
+// //send message to popup to display bias score
+
+
+// var isArticle = (url) => {
+
+
+
+// }
