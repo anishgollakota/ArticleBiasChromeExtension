@@ -34,8 +34,6 @@ app.post('/getArticleInfo', async (req, res) => {
 
     const articleInfo = https.request(options, r => {
         console.log(`statusCode: ${r.statusCode}`)
-
-
             var body = '';
             r.on('data', function (chunk) {
                 console.log('CHUNK: ' + chunk);
@@ -63,6 +61,77 @@ app.post('/getArticleInfo', async (req, res) => {
     
     articleInfo.write(body);
     articleInfo.end();
+
+})
+
+app.post('/getScore', (req, res)=> {
+    console.log(req.body.article);
+
+    const options = {
+        hostname: "localhost",
+        port: 5000,
+        path: '/getScore',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+    };
+
+    const scoreRequest = https.request(options, r => {
+        console.log(`statusCode: ${r.statusCode}`)
+            var body = '';
+            r.on('data', function (chunk) {
+                console.log('CHUNK: ' + chunk);
+              body += chunk;
+            });
+            r.on('end', function () {
+              console.log('BODY: ' + body);
+
+              res.json(JSON.parse(body));
+            });
+    });
+    console.log("request made");
+    
+    scoreRequest.on('error', error=>{
+        console.log(error);
+    })
+
+    var body = JSON.stringify({"article": req.body.article});
+
+    scoreRequest.write(body);
+    scoreRequest.end();
+
+})
+
+app.post('/isFakeNews', (req, res)=> {
+    const options = {
+        hostname: "localhost",
+        port: '5000',
+        path: '/',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+    };
+
+    const scoreRequest = https.request(options, r => {
+        console.log(`statusCode: ${r.statusCode}`)
+            var body = '';
+            r.on('data', function (chunk) {
+                console.log('CHUNK: ' + chunk);
+              body += chunk;
+            });
+            r.on('end', function () {
+              console.log('BODY: ' + body);
+
+              res.json(JSON.parse(body));
+            });
+    });
+
+    var body = JSON.stringify(req.body.article);
+
+    scoreRequest.write(body);
+    scoreRequest.end();
 
 })
 
