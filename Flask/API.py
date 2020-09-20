@@ -31,4 +31,8 @@ def isFakeNews():
     articleBody = request.json['article']
     return jsonify(str(predict(articleBody)))
 
+@app.route('/plotHistory', methods=['GET'])
+def plotHistory():
+    return "app.png"
+
 app.run()

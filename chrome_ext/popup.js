@@ -20,14 +20,17 @@ chrome.storage.local.get(['score'], function(data){
 })
 
 chrome.storage.local.get(['url_list'], function(data){
+    console.log(data.url_list);
     var scores = [];
     if(data.url_list != undefined){
         for( url of data.url_list){
-            chrome.storage.local.get([urlData], function(data){
-                scores.push(data.urlData.score);
+            chrome.storage.local.get([url], function(data){
+                scores.push(data.url.score);
             })
         }
     }
+
+    console.log(scores);
 
     fetch("http://localhost:5000/plotHistory", 
         {

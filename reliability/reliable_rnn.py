@@ -11,9 +11,12 @@ from keras.preprocessing.text import Tokenizer
 from keras.preprocessing import sequence
 from keras.utils import to_categorical
 from keras.callbacks import EarlyStopping, ModelCheckpoint
+import nltk
+import re
 
-df = pd.read_csv('train.csv')
+df = pd.read_csv('../data/train.csv')
 df.drop(['id', 'title', 'author'], axis = 1, inplace = True)
+df = df.dropna()
 
 print(df.head())
 
@@ -43,7 +46,7 @@ def RNN():
     return model
 
 checkpoint = ModelCheckpoint(
-    "reliable_model.h5",
+    "reliable_model",
     monitor="val_acc",
     save_best_only=True,
     mode='max',
@@ -59,7 +62,7 @@ model.compile(loss='binary_crossentropy',optimizer=RMSprop(),metrics=['accuracy'
 history = model.fit(padded_sequences, y_train, batch_size = 64, epochs = 10,
                     validation_split=0.2, callbacks=callbacks)
 
-model.save('reliable_model.h5')
+model.save('reliable_model')
 
 test_sequences = tokenizer.texts_to_sequences(x_test)
 test_sequences_padded = sequence.pad_sequences(test_sequences, maxlen=max_length)
