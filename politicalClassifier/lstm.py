@@ -9,6 +9,7 @@ from keras.layers import Dense, Dropout, LSTM, Embedding, Activation
 from keras.optimizers import RMSprop, Adam
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 import pickle
+import matplotlib.pyplot as plt
 
 def RNN():
     inputs = Input(name='inputs',shape=[max_len])
@@ -23,13 +24,17 @@ def RNN():
     model = Model(inputs=inputs,outputs=layer)
     return model
 
-tweets = pd.read_csv('../data/clean_tweets.csv')
+tweets = pd.read_csv('../data/clean_primary_debate_tweets.csv')
 
 #split into training/testing
 train_text, test_text, train_label, test_label = train_test_split(tweets['Tweet'], tweets['label'], random_state=2020, test_size=0.25, stratify=tweets['label'])
 
-max_words = 10000
-max_len = 15
+# seq_len = [len(i.split()) for i in train_text]
+# pd.Series(seq_len).hist(bins=30)
+# plt.show()
+
+max_words = 20000
+max_len = 100
 tok = Tokenizer(num_words=max_words)
 tok.fit_on_texts(train_text)
 sequences = tok.texts_to_sequences(train_text)
@@ -42,7 +47,7 @@ model.compile(loss='binary_crossentropy',optimizer= Adam(),metrics=['accuracy'])
 #model.fit(sequences_matrix,train_label,batch_size=128,epochs=10,
           #validation_split=0.2,callbacks=[EarlyStopping(monitor='val_loss',min_delta=0.0001)])
 
-checkpoint = ModelCheckpoint("simple_model.h5", monitor="val_acc", save_best_only=True, mode='max', verbose=1)
+checkpoint = ModelCheckpoint("lstm_model", monitor="val_acc", save_best_only=True, mode='max', verbose=1)
 model.fit(sequences_matrix,train_label,batch_size=128,epochs=8, callbacks=[checkpoint], validation_split=0.2)
 
 sequences_test = tok.texts_to_sequences(test_text)
