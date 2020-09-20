@@ -12,6 +12,13 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     });
   });
 
+chrome.storage.local.get(['score'], function(data){
+    if(data.score != undefined){
+        document.getElementById('resultsRequest').innerHTML = data.score;
+    }
+    
+})
+
 document.getElementById('dashboard-button').addEventListener('click', function(){
     var createProperties = {
         url: 'dashboard.html'

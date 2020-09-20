@@ -57,6 +57,7 @@ fetch("http://localhost:3000/getArticleInfo", {
       }).then(function(response){
 
         return response.json().then(function(data){
+          chrome.storage.local.set({score: data}, function(){});
           console.log(data);
         //display
       })
