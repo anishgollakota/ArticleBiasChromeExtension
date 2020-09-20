@@ -28,7 +28,8 @@ for d in democrat.Tweet:
     lemma = nltk.WordNetLemmatizer()
     d = [lemma.lemmatize(word) for word in d]
     d = " ".join(d)
-    clean_democrat.append(d)
+    if d != "":
+        clean_democrat.append(d)
 
 clean_republican = []
 for r in republican.Tweet:
@@ -40,7 +41,8 @@ for r in republican.Tweet:
     lemma = nltk.WordNetLemmatizer()
     r = [lemma.lemmatize(word) for word in r]
     r = " ".join(r)
-    clean_republican.append(r)
+    if r != "":
+        clean_republican.append(r)
 
 
 df_dem = DataFrame(clean_democrat, columns=['Tweet'])
