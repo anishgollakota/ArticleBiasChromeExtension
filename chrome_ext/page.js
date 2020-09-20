@@ -27,6 +27,7 @@ fetch("http://localhost:3000/getArticleInfo", {
 
     // send article body to flask backend
     if(article_body != undefined){
+      /*
       fetch("http://localhost:3000/getScore", {
         method: 'POST',
         headers:
@@ -42,7 +43,25 @@ fetch("http://localhost:3000/getArticleInfo", {
 
         //display
       })
-    }
+      */
+
+      fetch("http://localhost:5000/getScore", {
+        method: 'POST',
+        headers:
+        {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'article': article_body
+        })
+      }).then(function(response){
+
+        return response.json().then(function(data){
+          console.log(data);
+        //display
+      })
+    });
+  }
 
     /*
     fetch("http://localhost:5000/getScore", {method: 'GET' })
