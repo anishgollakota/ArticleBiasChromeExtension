@@ -68,7 +68,7 @@ app.post('/getScore', (req, res)=> {
     console.log(req.body.article);
 
     const options = {
-        hostname: "localhost",
+        hostname: "127.0.0.1",
         port: 5000,
         path: '/getScore',
         method: 'POST',

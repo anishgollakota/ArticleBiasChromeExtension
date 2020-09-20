@@ -62,6 +62,24 @@ fetch("http://localhost:3000/getArticleInfo", {
         //display
       })
     });
+
+    fetch("http://localhost:5000/isFakeNews", {
+        method: 'POST',
+        headers:
+        {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'article': article_body
+        })
+      }).then(function(response){
+
+        return response.json().then(function(data){
+          chrome.storage.local.set({fake_news_score: data}, function(){});
+          console.log(data);
+        //display
+      })
+    });
   }
 
     /*
