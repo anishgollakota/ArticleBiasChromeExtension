@@ -25,4 +25,4 @@ We want to add additional features for users to be able to analyze their browsin
 
 ## Demo
 
-![](https://img.youtube.com/vi/cfxwntOVLak/0.jpg)
+[![](https://img.youtube.com/vi/cfxwntOVLak/0.jpg)](https://www.youtube.com/watch?v=cfxwntOVLak)
