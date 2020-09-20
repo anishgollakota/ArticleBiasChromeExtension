@@ -19,5 +19,10 @@ Our extension scrapes the webpage that a user is on as they browse it. Content f
 * Javascript
 * HTML/CSS
 
+## What's next
+
+We want to add additional features for users to be able to analyze their browsing trends and find ways to more true and neutral information. We plan on doing so by creating more in-depth visualizations so that users can track their browsing behavior. In addition, we want to suggest alternate websites about the same topic that have less political bias.
+
 ## Demo
 
+![](https://img.youtube.com/vi/cfxwntOVLak/0.jpg)
