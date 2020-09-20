@@ -1,25 +1,21 @@
 
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     //check if article
+console.log("in popup");
 
-
-//     //send request to api to get article content
-
-
-//     //send article body to ML backend
-
-
-//     //display bias score
+chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {request: 'selection'}, function(data) {
+        console.log(data.response);
+        //send to backend
 
 
 
+    });
+  });
 
-//   });
-
-
-// var isArticle = (url) => {
+document.getElementById('dashboard-button').addEventListener('click', function(){
+    var createProperties = {
+        url: 'dashboard.html'
+    }
+    chrome.tabs.create(createProperties, function(tab){});
+});
   
-
-
-// }

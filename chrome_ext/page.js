@@ -1,3 +1,5 @@
+
+
 //check if article
 var curr_webpage = window.location.href
 
@@ -17,13 +19,37 @@ fetch("http://localhost:3000/getArticleInfo", {
 }).then(function(response){
 
   return response.json().then(function(data){
+    
     var article_body = data[0]['article']['articleBody'];
     var headline = data[0]['article']['headline'];
-  
     console.log(article_body);
     console.log(headline);
 
-    // send article body to ML backend
+    // send article body to flask backend
+    // fetch("http://localhost:5000/getScore", {method: 'GET' })
+    //   .then(function(data){
+
+    // })
+
+    // fetch("http://localhost:5000/isFakeNews", {method: 'GET' }).then(function(data){
+    //   chrome.storage.local
+    // })
+
+    //storing data
+    chrome.storage.local.get(['url_list'], function(list){
+      console.log("list");
+      console.log(list.url_list);
+
+      var new_list = list.url_list == undefined ? [] : list.url_list;
+      new_list.push(curr_webpage)
+      chrome.storage.local.set({'url_list': new_list}, function(){})
+    })
+    
+    var score = 0;
+    chrome.storage.local.set({ curr_webpage: {"body": article_body, "headline": headline, "pb": score} }, function(){});
+
+
+    
 
 
     //send message to popup to display bias score
@@ -37,6 +63,25 @@ fetch("http://localhost:3000/getArticleInfo", {
 })
 
 
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
 
-
+  if(message.request == "selection"){
+      console.log(window.getSelection().toString());
+      sendResponse({response: window.getSelection().toString()});
+  }
+  else if(message.request == "get_list"){
+    chrome.storage.local.get(['url_list'], function(result) {
+      var dict = [];
+      for (url of result.url_list){
+        chrome.storage.local.get([url], function(url_result) {
+          dict.append(url_result.url);
+        });
+      }
+      sendResponse({response: dict});
+    });
+  }
+  else{
+      console.log("bruh");
+  }
+})
 

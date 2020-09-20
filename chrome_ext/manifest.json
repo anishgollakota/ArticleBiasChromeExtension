@@ -8,11 +8,15 @@
       "js": ["page.js"]
     }
   ],
-  "permissions": [ "tabs" ],
+  "permissions": [ "tabs", "storage" ],
   "browser_action": {
     "default_title": "Time to current page",
     "default_icon": "clock.png",
     "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
   },
   "manifest_version": 2
 }
