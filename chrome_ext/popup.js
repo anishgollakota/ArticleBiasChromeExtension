@@ -19,6 +19,32 @@ chrome.storage.local.get(['score'], function(data){
     
 })
 
+chrome.storage.local.get(['url_list'], function(data){
+    var scores = [];
+    if(data.url_list != undefined){
+        for( url of data.url_list){
+            chrome.storage.local.get([urlData], function(data){
+                scores.push(data.urlData.score);
+            })
+        }
+    }
+
+    fetch("http://localhost:5000/plotHistory", 
+        {
+            method: 'POST',
+            headers:
+            {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              'hist': scores
+            })
+    }).then(function(data){
+        //img
+        console.log(data);
+    });
+})
+
 document.getElementById('dashboard-button').addEventListener('click', function(){
     var createProperties = {
         url: 'dashboard.html'

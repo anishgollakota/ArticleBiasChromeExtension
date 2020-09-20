@@ -57,29 +57,46 @@ fetch("http://localhost:3000/getArticleInfo", {
       }).then(function(response){
 
         return response.json().then(function(data){
+          
           chrome.storage.local.set({score: data}, function(){});
           console.log(data);
+          var score = data;
+
+          fetch("http://localhost:5000/isFakeNews", {
+            method: 'POST',
+            headers:
+            {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              'article': article_body
+            })
+          }).then(function(response){
+
+            return response.json().then(function(data){
+              chrome.storage.local.set({fake_news_score: data}, function(){});
+              console.log(data);
+
+              chrome.storage.local.get(['url_list'], function(list){
+                console.log("list");
+                console.log(list.url_list);
+          
+                var new_list = list.url_list == undefined ? [] : list.url_list;
+                new_list.push(curr_webpage)
+                chrome.storage.local.set({'url_list': new_list}, function(){})
+              })
+              
+              chrome.storage.local.set({ curr_webpage: {"body": article_body, "headline": headline, "pb": score} }, function(){});
+
+
+            //display
+          })
+        });
         //display
       })
     });
 
-    fetch("http://localhost:5000/isFakeNews", {
-        method: 'POST',
-        headers:
-        {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          'article': article_body
-        })
-      }).then(function(response){
-
-        return response.json().then(function(data){
-          chrome.storage.local.set({fake_news_score: data}, function(){});
-          console.log(data);
-        //display
-      })
-    });
+    
   }
 
     /*
@@ -94,17 +111,7 @@ fetch("http://localhost:3000/getArticleInfo", {
     */
 
     //storing data
-    chrome.storage.local.get(['url_list'], function(list){
-      console.log("list");
-      console.log(list.url_list);
-
-      var new_list = list.url_list == undefined ? [] : list.url_list;
-      new_list.push(curr_webpage)
-      chrome.storage.local.set({'url_list': new_list}, function(){})
-    })
     
-    var score = 0;
-    chrome.storage.local.set({ curr_webpage: {"body": article_body, "headline": headline, "pb": score} }, function(){});
 
 
     
