@@ -2,8 +2,6 @@ import tensorflow as tf
 import pickle
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from keras.models import Model
@@ -27,6 +25,7 @@ def predict(input):
     padded_sequence = sequence.pad_sequences(sequenced, maxlen=200)
     prediction = model.predict(padded_sequence)[0][0]
     print(prediction)
+    return prediction
 
 predict(input)
 
