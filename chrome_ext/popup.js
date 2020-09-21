@@ -1,5 +1,4 @@
 
-
 console.log("in popup");
 
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -12,11 +11,33 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     });
   });
 
-chrome.storage.local.get(['score'], function(data){
+chrome.storage.local.get(['score', 'fake_news_score'], function(data){
     if(data.score != undefined){
-        document.getElementById('resultsRequest').innerHTML = data.score;
+        console.log("in storage thing");
+        var rating = "";
+        var color = "";
+        if(data.score > 0.7){
+            rating = "Strongly Conservative";
+            color = '#ff0000';
+        }
+        else if(data.score > 0.5){
+            rating = "Mildly Conservative";
+            color = '#FFCCCB';
+        }
+        else if(data.score > 0.3){
+            rating = "Mildly Liberal";
+            color = '#87CEEB';
+        }else{
+            rating = "Strongly Liberal";
+            color = '#0000ff';
+        }
+  
+        document.getElementById('resultsRequest').innerHTML = '<p style ="fontcolor:' + color + '">' + rating + '</p>';
+        document.getElementById('resultsRequest').style.color = color
     }
-    
+    if(data.fake_news_score != undefined){
+        document.getElementById('resultsConnect').innerHTML = data.fake_news_score;
+    }
 })
 
 chrome.storage.local.get(['url_list'], function(data){

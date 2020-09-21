@@ -62,7 +62,7 @@ fetch("http://localhost:3000/getArticleInfo", {
           console.log(data);
           var score = data;
 
-           /*fetch("http://localhost:5000/isFakeNews", {
+           fetch("http://localhost:5000/isFakeNews", {
             method: 'POST',
             headers:
             {
@@ -75,7 +75,7 @@ fetch("http://localhost:3000/getArticleInfo", {
 
             return response.json().then(function(data){
               chrome.storage.local.set({fake_news_score: data}, function(){});
-              console.log(data);  */
+              console.log(data);  
 
               chrome.storage.local.get(['url_list'], function(list){
                 console.log("list");
@@ -90,8 +90,8 @@ fetch("http://localhost:3000/getArticleInfo", {
 
 
             //display
-         /* })
-        }); */
+          })
+        }); 
         //display
       })
     });
